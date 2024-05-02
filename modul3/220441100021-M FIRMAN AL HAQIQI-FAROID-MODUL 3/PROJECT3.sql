@@ -95,3 +95,5 @@ DROP PROCEDURE namabuku;
 
 CALL namabuku();
 
+
+
