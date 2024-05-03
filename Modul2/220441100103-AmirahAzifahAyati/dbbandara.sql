@@ -1,4 +1,4 @@
-CREATE VIEW updatable_maskapai AS
+`mahasiswa``mahasiswa``mahasiswa``mahasiswa`CREATE VIEW updatable_maskapai AS
 SELECT * FROM Maskapai;
 
 CREATE OR REPLACE VIEW updatable_maskapai AS
