@@ -10,9 +10,7 @@ BEGIN
     VALUES (jadwal_id, penumpang_nama, nomor_kursi);
 END //
 DELIMITER ;
-
 CALL InsertTiket(1, 'Joni', 'A01');
-
 
 -- Stored Procedure dengan parameter OUT
 DELIMITER //
