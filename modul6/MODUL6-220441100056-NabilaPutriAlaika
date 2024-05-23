@@ -1,0 +1,65 @@
+-- SOAL NO 1 --
+DELIMITER //
+
+CREATE PROCEDURE CekBukuTerlaris(
+    IN p_buku_id INT
+)
+BEGIN
+    DECLARE buku_terlaris INT;
+    DECLARE judul_buku VARCHAR(255);
+    DECLARE max_transaksi INT;
+
+    -- Mengambil judul buku berdasarkan ID
+    SELECT judul INTO judul_buku
+    FROM buku
+    WHERE buku_id = p_buku_id;
+
+    -- Hitung jumlah total peminjaman untuk buku yang diberikan
+    SELECT COUNT(*) INTO buku_terlaris
+    FROM peminjaman
+    WHERE buku_id = p_buku_id;
+
+    -- Mengambil jumlah transaksi maksimal dari semua buku
+    SELECT MAX(jumlah_peminjaman) INTO max_transaksi
+    FROM (
+        SELECT buku_id, COUNT(*) AS jumlah_peminjaman
+        FROM peminjaman
+        GROUP BY buku_id
+    ) AS subquery;
+
+    -- Cek apakah buku tersebut adalah buku terlaris
+    IF buku_terlaris = max_transaksi THEN
+        SELECT CONCAT(judul_buku, ' adalah buku terlaris') AS STATUS;
+    ELSE
+        SELECT CONCAT(judul_buku, ' bukan buku terlaris') AS STATUS;
+    END IF;
+END //
+
+DELIMITER ;
+
+CALL CekBukuTerlaris(2);
+
+-- SOAL NO 2 --
+
+DELIMITER //
+
+CREATE PROCEDURE TampilkanDataAnggota()
+BEGIN
+    DECLARE currentAnggotaID INT;
+    SET currentAnggotaID = 1;
+
+    -- Loop untuk menampilkan data anggota dari ID 1 hingga 10
+    WHILE currentAnggotaID <= 10 DO
+        -- Tampilkan data anggota dengan ID saat ini
+        SELECT * FROM anggota 
+        WHERE anggota_id = currentAnggotaID;
+       
+        -- Increment currentAnggotaID untuk melanjutkan ke anggota berikutnya
+        SET currentAnggotaID = currentAnggotaID + 1;
+    END WHILE;
+END //
+
+DELIMITER ;
+
+-- Memanggil prosedur untuk menampilkan data anggota
+CALL TampilkanDataAnggota();
