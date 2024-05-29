@@ -1,0 +1,72 @@
+-- SOAL NO 1--
+DELIMITER //
+
+CREATE PROCEDURE HitungHariSejakTransaksiTerakhir(
+    IN p_anggota_id INT,
+    OUT p_selisih_hari INT,
+    OUT p_judul VARCHAR(255)
+)
+BEGIN
+    DECLARE v_tanggal_terakhir DATE;
+
+    -- Mengambil tanggal transaksi terakhir dan judul buku dari tabel peminjaman
+    SELECT MAX(p.tanggal_peminjaman), b.judul
+    INTO v_tanggal_terakhir, p_judul
+    FROM peminjaman p
+    JOIN buku b ON p.buku_id = b.buku_id
+    WHERE p.anggota_id = p_anggota_id;
+
+    -- Menghitung selisih hari antara tanggal hari ini dan tanggal transaksi terakhir
+    SET p_selisih_hari = DATEDIFF(CURDATE(), v_tanggal_terakhir);
+END //
+
+DELIMITER ;
+
+SET @anggota_id = 4;
+SET @selisih_hari = 0;
+SET @judul = '';
+
+CALL HitungHariSejakTransaksiTerakhir(@anggota_id, @selisih_hari, @judul);
+SELECT @judul AS NamaBuku, @selisih_hari AS SelisihHari;
+
+-- SOAL NO 2 --
+
+DELIMITER //
+
+CREATE PROCEDURE JumlahTransaksiPerBulan(
+    IN p_buku_id INT,
+    IN p_bulan INT,
+    OUT p_jumlah_transaksi INT
+)
+BEGIN
+    SELECT COUNT(*) INTO p_jumlah_transaksi
+    FROM peminjaman
+    WHERE buku_id = p_buku_id
+      AND MONTH(tanggal_peminjaman) = p_bulan;
+END //
+
+DELIMITER ;
+
+SET @buku_id = 3;
+SET @bulan = 05;
+CALL JumlahTransaksiPerBulan(@buku_id, @bulan, @jumlah_transaksi);
+SELECT @jumlah_transaksi AS JumlahTransaksi;
+
+
+-- SOAL NO 3
+DELIMITER //
+
+CREATE PROCEDURE TambahDataPeminjaman(   
+    IN p_peminjaman_id INT,
+    IN p_anggota_id INT,
+    IN p_buku_id INT,
+    IN p_status_pengembalian VARCHAR(50)
+)
+BEGIN
+    INSERT INTO peminjaman (peminjaman_id, anggota_id, buku_id, tanggal_peminjaman, status_pengembalian)
+    VALUES (p_peminjaman_id, p_anggota_id, p_buku_id, CURDATE(), p_status_pengembalian);
+END //
+
+DELIMITER ;
+CALL TambahDataPeminjaman(26, 8, 3, 'Belum Kembali');
+SELECT * FROM peminjaman;
