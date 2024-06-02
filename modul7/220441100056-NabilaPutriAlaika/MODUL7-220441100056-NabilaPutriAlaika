@@ -1,0 +1,78 @@
+CREATE TABLE log_transaksi (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    tanggal_waktu DATETIME,
+    keterangan VARCHAR(255)
+);
+
+-- SOAL NO 1 --
+DELIMITER //
+
+CREATE TRIGGER after_insert_peminjaman
+AFTER INSERT ON peminjaman
+FOR EACH ROW
+BEGIN
+    -- Insert ke dalam tabel log_transaksi
+    INSERT INTO log_transaksi (tanggal_waktu, keterangan)
+    VALUES (NOW(), 'Baris baru dimasukkan ke dalam tabel peminjaman');
+END;
+//
+
+DELIMITER ;
+
+INSERT INTO peminjaman (peminjaman_id, anggota_id, buku_id, tanggal_peminjaman, tanggal_pengembalian, status_pengembalian)
+VALUES (30, 1, 2, '2024-05-24', '2024-06-24', 'Belum Kembali');
+SELECT * FROM log_transaksi;
+
+-- SOAL NO 2 --
+DELIMITER //
+
+CREATE TRIGGER before_insert_buku 
+BEFORE INSERT ON buku 
+FOR EACH ROW 
+BEGIN 
+    IF NEW.jumlah_halaman < 0 THEN 
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Nilai jumlah halaman tidak boleh negatif'; 
+    END IF; 
+END; //
+
+DELIMITER ;
+
+INSERT INTO buku (judul, jumlah_halaman) VALUES ('Cinta', -8);
+
+-- SOAL NO 3 --
+DELIMITER //
+
+CREATE TRIGGER after_update_buku 
+AFTER UPDATE ON buku 
+FOR EACH ROW 
+BEGIN 
+    UPDATE ketersediaan_buku 
+    SET judul = NEW.judul 
+    WHERE buku_id = NEW.buku_id;
+END;
+//
+
+DELIMITER ;
+
+UPDATE buku SET judul = 'Bulan' WHERE buku_id = 1;
+SELECT * FROM ketersediaan_buku;
+
+-- SOAL NO 4 --
+ALTER TABLE anggota ADD COLUMN no_telp VARCHAR(20);
+
+-- Buat trigger untuk memastikan panjang no_telp minimal 10 angka
+DELIMITER //
+
+CREATE TRIGGER before_insert_anggota
+BEFORE INSERT ON anggota
+FOR EACH ROW
+BEGIN
+    IF LENGTH(NEW.no_telp) < 10 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No Telpon tidak boleh kurang dari 10 angka';
+    END IF;
+END //
+
+DELIMITER ;
+
+INSERT INTO anggota (anggota_id, nama, alamat, tanggal_daftar, no_telp) VALUES ('22', 'BYeon Woo Seok', 'Jl. Rain', '2024-05-26', '1234567899');
+
