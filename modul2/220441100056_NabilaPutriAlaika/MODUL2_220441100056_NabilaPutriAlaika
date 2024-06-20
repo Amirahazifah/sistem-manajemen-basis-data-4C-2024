@@ -1,0 +1,27 @@
+CREATE VIEW Anggota_View AS
+SELECT anggota_id, nama, alamat, tanggal_daftar
+FROM Anggota;
+
+SHOW CREATE VIEW Anggota_View;
+
+CREATE VIEW Buku_View AS
+SELECT buku_id, judul, pengarang, tahun_terbit, jumlah_halaman
+FROM Buku;
+
+SHOW CREATE VIEW Buku_View;
+
+CREATE VIEW Peminjaman_View AS
+SELECT p.peminjaman_id, a.nama AS nama_anggota, b.judul AS judul_buku,
+       p.tanggal_peminjaman, p.tanggal_pengembalian, p.status_pengembalian
+FROM Peminjaman p
+JOIN Anggota a ON p.anggota_id = a.anggota_id
+JOIN Buku b ON p.buku_id = b.buku_id;
+
+SHOW CREATE VIEW Peminjaman_View;
+
+CREATE VIEW Kategori_View AS
+SELECT kategori_id, nama_kategori
+FROM Kategori;
+
+SHOW CREATE VIEW Kategori_View;
+

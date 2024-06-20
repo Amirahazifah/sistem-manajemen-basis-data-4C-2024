@@ -1,0 +1,94 @@
+DELIMITER //
+
+CREATE PROCEDURE DetailBuku(
+    IN p_buku_id INT
+)
+BEGIN
+    SELECT *
+    FROM Buku
+    WHERE buku_id = p_buku_id;
+END //
+
+DELIMITER ;
+CALL DetailBuku(8);
+
+DELIMITER //
+
+CREATE PROCEDURE TotalBuku(
+    OUT total_books INT
+)
+BEGIN
+    SELECT COUNT(*) INTO total_books FROM Buku;
+END //
+
+DELIMITER ;
+CALL TotalBuku(@total_books);
+SELECT @total_books AS TotalBooks;
+
+DELIMITER //
+
+CREATE PROCEDURE UpdateBookTitle(
+    INOUT p_buku_id INT,
+    IN p_new_title VARCHAR(255)
+)
+BEGIN
+    UPDATE Buku
+    SET judul = p_new_title
+    WHERE buku_id = p_buku_id;
+END //
+
+DELIMITER ;
+
+SET @buku_id = 1;
+CALL UpdateBookTitle(@buku_id, 'Bulan');
+
+DELIMITER //
+
+CREATE PROCEDURE TambahBuku(
+    IN p_judul VARCHAR(255),
+    IN p_pengarang VARCHAR(100),
+    IN p_tahun_terbit INT,
+    IN p_jumlah_halaman INT,
+)
+BEGIN
+    INSERT INTO Buku (judul, pengarang, tahun_terbit, jumlah_halaman)
+    VALUES (p_judul, p_pengarang, p_tahun_terbit, p_jumlah_halaman);
+    
+END //
+
+DELIMITER ;
+CALL TambahBuku('Stand By Me', 'Doraemon', 2023, 300);
+SELECT * FROM buku;
+
+DELIMITER //
+
+CREATE PROCEDURE UpdateBook(
+    IN p_buku_id INT,
+    IN p_judul VARCHAR(255),
+    IN p_pengarang VARCHAR(100),
+    IN p_tahun_terbit INT,
+    IN p_jumlah_halaman INT
+)
+BEGIN
+    UPDATE Buku
+    SET judul = p_judul,
+        pengarang = p_pengarang,
+        tahun_terbit = p_tahun_terbit,
+        jumlah_halaman = p_jumlah_halaman
+    WHERE buku_id = p_buku_id;
+END //
+
+DELIMITER ;
+CALL UpdateBook(1, 'Matahari', 'Tere Liye', 2018, 368);
+
+DELIMITER //
+
+CREATE PROCEDURE DeleteBook(
+    IN p_buku_id INT
+)
+BEGIN
+    DELETE FROM Buku WHERE buku_id = p_buku_id;
+END //
+
+DELIMITER ;
+CALL DeleteBook(0);
