@@ -1,3 +1,1 @@
-# sistem-manajemen-basis-data-4C-2024
-Ini adalah repository untuk pengumpulan tugas selama praktikum SMBD-4C 2024.
-# Nambah doang
+Diharapkan semua praktikan mengumpulkan tugas modul, sesuai dengan folder modul masing - masing. Dan juga di dalam folder modul harus ada folder dengan NIM-Nama kalian terlebih dahulu, baru setelah itu kumpulkan tugas kalian.

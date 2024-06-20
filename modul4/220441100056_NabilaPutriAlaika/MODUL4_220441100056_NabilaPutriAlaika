@@ -1,0 +1,57 @@
+-- Urutkan data buku berdasarkan judul secara ascending (A-Z)
+SELECT * FROM buku ORDER BY judul ASC;
+
+-- Urutkan data buku berdasarkan jumlah halaman secara descending (terbanyak ke terendah)
+SELECT * FROM buku ORDER BY jumlah_halaman DESC;
+
+SELECT B.judul, COUNT(*) AS jumlah_peminjaman
+FROM Peminjaman AS P
+JOIN Buku AS B ON P.buku_id = B.buku_id
+GROUP BY B.judul
+HAVING COUNT(*) > 2
+ORDER BY jumlah_peminjaman DESC;
+
+SELECT b.*
+FROM Peminjaman AS p
+JOIN Buku AS b ON p.buku_id = b.buku_id
+WHERE p.tanggal_peminjaman BETWEEN '2023-05-01' AND '2023-09-31';
+
+-- Menampilkan buku yang paling sering dipinjam berdasarkan jumlah transaksi peminjaman
+SELECT buku_id, COUNT(*) AS jumlah_peminjaman
+FROM peminjaman
+GROUP BY buku_id
+ORDER BY jumlah_peminjaman DESC
+LIMIT 1;
+
+-- Menampilkan buku yang jarang dipinjam berdasarkan jumlah transaksi peminjaman
+SELECT buku_id, COUNT(*) AS jumlah_peminjaman
+FROM peminjaman
+GROUP BY buku_id
+ORDER BY jumlah_peminjaman ASC
+LIMIT 1;
+
+-- Menampilkan buku yang judulnya dimulai dengan huruf 'a'
+SELECT * FROM buku WHERE judul LIKE 'a%';
+
+-- Menampilkan peminjam yang paling sering melakukan transaksi peminjaman
+SELECT peminjaman_id, COUNT(*) AS jumlah_transaksi
+FROM peminjaman
+GROUP BY peminjaman_id
+ORDER BY jumlah_transaksi DESC
+LIMIT 1;
+
+-- Menampilkan peminjam yang melakukan transaksi peminjaman lebih dari 3 kali
+SELECT anggota_id, COUNT(*) AS jumlah_transaksi
+FROM peminjaman
+GROUP BY anggota_id
+HAVING jumlah_transaksi > 3;
+
+
+-- Menampilkan data diri peminjam beserta detail transaksi peminjaman yang dilakukan
+SELECT a.*, p.*
+FROM anggota a
+JOIN peminjaman p ON a.anggota_id = p.anggota_id;
+
+
+
+

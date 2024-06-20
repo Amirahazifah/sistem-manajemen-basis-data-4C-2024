@@ -1,0 +1,54 @@
+# NOMOR 1
+
+# blok 1, contoh updatable view 1
+CREATE VIEW view_transaksi AS
+SELECT ts.id_transaksi, m.merk, m.model, p.nama AS nama_pelanggan, ts.tanggal_sewa, ts.tanggal_kembali, ts.total_biaya
+FROM transaksi_sewa ts
+JOIN mobil m ON ts.id_mobil = m.id_mobil
+JOIN pelanggan p ON ts.id_pelanggan = p.id_pelanggan;
+
+# memanggil view
+SELECT * FROM view_transaksi;
+
+# update view_transaksi
+UPDATE view_transaksi
+SET tanggal_sewa = '2024-02-1'
+WHERE id_transaksi = 1;
+
+# memanggil view lagi untuk cek perubahan
+SELECT * FROM view_transaksi;
+
+# blok 2, contoh updatable view 2
+CREATE VIEW view_detail_pembayaran AS
+SELECT p.id_pembayaran, ts.id_transaksi, p.metode_pembayaran, p.jumlah_pembayaran, p.tanggal_pembayaran
+FROM pembayaran p
+INNER JOIN transaksi_sewa ts ON p.id_pembayaran = ts.id_transaksi;
+
+# memanggil view
+SELECT * FROM view_detail_pembayaran;
+
+# update view_detail_pembayaran
+UPDATE view_detail_pembayaran
+SET metode_pembayaran = 'Transfer Bank'
+WHERE id_transaksi = 1;
+
+# memanggil view untuk cek perubahan
+SELECT * FROM view_detail_pembayaran;
+
+# NOMOR 2
+
+# blok 3, contoh read only view 1
+CREATE VIEW view_informasi_mobil AS
+SELECT id_mobil, merk, model, tahun, warna, harga_sewa
+FROM mobil;
+
+# memanggil view
+SELECT * FROM view_informasi_mobil;
+
+# blok 4, contoh read only view 2
+CREATE VIEW view_informasi_pelanggan AS
+SELECT id_pelanggan, nama, alamat, nomor_hp
+FROM pelanggan;
+
+# memanggil view
+SELECT * FROM view_informasi_pelanggan
