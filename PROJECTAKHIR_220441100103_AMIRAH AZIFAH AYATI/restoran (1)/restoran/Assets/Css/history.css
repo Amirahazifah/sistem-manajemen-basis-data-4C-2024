@@ -1,0 +1,39 @@
+.container {
+  padding-top: 70px;
+}
+
+.latest-product__item__pic {
+  width: 130px;
+  height: 100px;
+}
+
+.latest-product__item__pic img {
+  width: inherit;
+  height: inherit;
+  object-fit: cover;
+}
+
+.print {
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  color: #333;
+  background-color: #fff;
+  cursor: pointer;
+  margin: 10px 0px;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #section-to-print,
+  #section-to-print * {
+    visibility: visible;
+  }
+  #section-to-print {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}

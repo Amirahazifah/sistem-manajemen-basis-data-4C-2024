@@ -1,0 +1,35 @@
+body {
+  font-family: "Lato", sans-serif;
+}
+
+.card-header {
+  height: 230px;
+  background-image: url(../image/food.jpg);
+}
+
+.form-group {
+  margin: 20px 40px;
+}
+
+.form-style-login i,
+.form-style-register i {
+  font-size: 20px;
+  bottom: 160px;
+  right: 15%;
+  cursor: pointer;
+  opacity: 0.4;
+  display: none;
+}
+
+.form-style-register .nth-2 {
+  font-size: 20px;
+  bottom: 230px;
+  right: 15%;
+  cursor: pointer;
+  opacity: 0.4;
+}
+
+.btn {
+  background-color: #1f946e;
+  color: white;
+}
